@@ -2,6 +2,14 @@
 #define GPIOA_MODER *((volatile unsigned int*)(0x40020000 + 0x00))
 #define GPIOA_ODR *((volatile unsigned int*)(0x40020000 + 0x14))
 
+void SystemInit(void) {
+    // Заглушка системной инициализации
+}
+
+void _init(void) {
+    // пусто
+}
+
 void delay(volatile int count) {
     while (count--) {
         //

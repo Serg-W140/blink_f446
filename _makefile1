@@ -1,0 +1,27 @@
+# 1. Переменные кросс-компилятора под ARM
+CC = arm-none-eabi-gcc
+OBJCOPY = arm-none-eabi-objcopy
+CFLAGS = -mcpu=cortex-m4 -mthumb -O0 -g -Wall --specs=nosys.specs -nostartfiles -Wl,--gc-sections
+
+# Имена файлов
+TARGET = blink
+LINKER_SCRIPT = linker.ld
+
+# 2. Главная цель - собирает .elf и вырезает из него чистый .bin для прошивки
+all: $(TARGET).bin
+
+$(TARGET).bin: src/main.c src/startup_stm32f446xx.s
+	$(CC) $(CFLAGS) -T$(LINKER_SCRIPT) src/startup_stm32f446xx.s src/main.c -o $(TARGET).elf
+	$(OBJCOPY) -O binary $(TARGET).elf $(TARGET).bin
+	@echo "🔥 Сборка завершена! Прошивка $(TARGET).bin готова."
+
+# 3. Команда для прошивки платы прямо из терминала!
+# Используем утилиту st-flash, которую мы ставили
+flash: all
+	st-flash write $(TARGET).bin 0x08000000
+
+# 4. Очистка 
+clean:
+	rm -f *.elf *.bin
+
+.PHONY: all flash clean
