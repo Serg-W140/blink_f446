@@ -4,7 +4,7 @@ OBJCOPY = arm-none-eabi-objcopy
 
 # Флаги компиляции для чистого bare-metal
 CFLAGS  = -mcpu=cortex-m4 -mthumb -O0 -g -Wall
-CFLAGS += -ffreestanding -nostdlib --specs=nosys.specs
+CFLAGS += -ffreestanding -nostdlib --specs=nosys.specs -Iinclude
 
 # Имена файлов
 TARGET        = blink
